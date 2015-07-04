@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SuryaInterviewSolution</string>
+
+    <string name="enter_email">Enter Your email address</string>
+    <string name="action_settings">Settings</string>
+    <string name="send_request">Send Request</string>
+</resources>
