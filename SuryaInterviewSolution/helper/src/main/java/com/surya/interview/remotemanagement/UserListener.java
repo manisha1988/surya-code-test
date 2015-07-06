@@ -7,5 +7,5 @@ public interface UserListener {
 
     void onPreExecute();
 
-    void onPostExecute(String result);
+    void onPostExecute(Object result);
 }

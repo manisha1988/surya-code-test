@@ -6,10 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import com.surya.interview.remotemanagement.AndroidTaskExecutor;
+import com.surya.interview.remotemanagement.TaskListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,17 +61,17 @@ public class ResponseListActivity extends ListActivity {
             }
 
             return responseList;
-        } catch (Exception e) {//Do Nothing
+        } catch (Exception e) {
+            Log.e("list", e.getMessage());
         }
         return null;
     }
 
     private Drawable fetchImage(final String imageUrl) throws Exception{
 
-        return new AsyncTask<Void, Void, Drawable>(){
-
+        Object data =  new AndroidTaskExecutor().getResult(new TaskListener() {
             @Override
-            protected Drawable doInBackground(Void... params) {
+            public Object execute() {
                 try {
                     URL url = new URL(imageUrl);
 
@@ -78,20 +80,18 @@ public class ResponseListActivity extends ListActivity {
 
                     // Convert the BufferedInputStream to a Bitmap
                     Bitmap bMap = BitmapFactory.decodeStream(buf);
-
-                    if (buf != null) {
-                        buf.close();
-                    }
+                    buf.close();
 
                     return new BitmapDrawable(null, bMap);
-
                 } catch (Exception e) {
                     Log.e("Error reading file", e.toString());
                 }
 
                 return null;
             }
-        }.execute().get();
+        });
+
+        return (Drawable)data;
     }
 }
 

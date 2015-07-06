@@ -5,5 +5,5 @@ package com.surya.interview.remotemanagement;
  */
 public interface TaskListener {
 
-    String execute();
+    Object execute();
 }

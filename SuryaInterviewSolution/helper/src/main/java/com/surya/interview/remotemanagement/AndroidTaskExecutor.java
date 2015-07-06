@@ -2,10 +2,12 @@ package com.surya.interview.remotemanagement;
 
 import android.os.AsyncTask;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Created by ManishaKedia on 04/07/2015.
  */
-public class AndroidTaskExecutor extends AsyncTask<Void, String, String>{
+public class AndroidTaskExecutor extends AsyncTask<Void, String, Object>{
 
     private UserListener userListener;
     private TaskListener taskListener;
@@ -17,14 +19,30 @@ public class AndroidTaskExecutor extends AsyncTask<Void, String, String>{
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected Object doInBackground(Void... params) {
         return taskListener.execute();
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(Object result) {
         super.onPostExecute(result);
         userListener.onPostExecute(result);
+    }
+
+    public Object getResult(TaskListener taskListener) throws InterruptedException, ExecutionException {
+        this.userListener = new UserListener() {
+            @Override
+            public void onPreExecute() {
+                //Do nothing
+            }
+
+            @Override
+            public void onPostExecute(Object result) {
+                //Do nothing
+            }
+        };
+        this.taskListener = taskListener;
+        return this.execute().get();
     }
 
     public void execute(UserListener userListener, TaskListener taskListener) {

@@ -58,14 +58,14 @@ public class MainActivity extends ActionBarActivity {
 
 
                     @Override
-                    public void onPostExecute(String result) {
+                    public void onPostExecute(Object result) {
                         Intent intent = new Intent(MainActivity.this, ResponseListActivity.class);
-                        intent.putExtra("Response Data", result);
+                        intent.putExtra("Response Data", (String)result);
                         startActivity(intent);
                     }
                 }, new TaskListener() {
                     @Override
-                    public String execute() {
+                    public Object execute() {
                         AndroidHttpReq httpReq = new AndroidHttpReq(url);
                         httpReq.put("emailId", emailId);
                         try {
