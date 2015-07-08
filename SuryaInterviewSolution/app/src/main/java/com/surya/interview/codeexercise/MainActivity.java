@@ -1,6 +1,7 @@
 package com.surya.interview.codeexercise;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,14 +52,22 @@ public class MainActivity extends ActionBarActivity {
                 }
 
                 new AndroidTaskExecutor().execute(new UserListener() {
+                    ProgressDialog progressBar;
+
                     @Override
                     public void onPreExecute() {
-                        //Do nothing
+                        // prepare for a progress bar dialog
+                        progressBar = new ProgressDialog(MainActivity.this);
+                        progressBar.setCancelable(false);
+                        progressBar.setMessage("Sending request...");
+                        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressBar.show();
                     }
-
 
                     @Override
                     public void onPostExecute(Object result) {
+                        if(progressBar != null)
+                            progressBar.dismiss();
                         Intent intent = new Intent(MainActivity.this, ResponseListActivity.class);
                         intent.putExtra("Response Data", (String)result);
                         startActivity(intent);
