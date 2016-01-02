@@ -21,16 +21,14 @@ import java.io.UnsupportedEncodingException;
 public class AndroidHttpReq {
 
     private final HttpPost httpPost;
-    private JSONObject params;
+    private final JSONObject params;
 
     public AndroidHttpReq(String url){
         httpPost = new HttpPost(url);
+        params = new JSONObject();
     }
 
     public void put(String key, String value) {
-        if(params == null)
-            params = new JSONObject();
-
         try {
             params.put(key, value);
         }
